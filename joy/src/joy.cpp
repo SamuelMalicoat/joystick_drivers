@@ -51,6 +51,7 @@ namespace joy
 Joy::Joy(const rclcpp::NodeOptions & options)
 : rclcpp::Node("joy_node", options)
 {
+  fprintf(stderr,"Hello World from joy!");
   dev_id_ = static_cast<int>(this->declare_parameter("device_id", 0));
 
   dev_name_ = this->declare_parameter("device_name", std::string(""));
@@ -445,7 +446,8 @@ void Joy::eventThread()
       } else {
         RCLCPP_INFO(get_logger(), "Unknown event type %d", e.type);
       }
-    } else {
+    } 
+    if (!should_publish) {
       // We didn't succeed, either because of a failure or because of a timeout.
       // If we are autorepeating and enough time has passed, set should_publish.
       rclcpp::Time now = this->now();
